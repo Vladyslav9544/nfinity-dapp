@@ -861,6 +861,25 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "_organizer",
+        type: "address",
+      },
+    ],
+    name: "getEventIdsByOrgazer",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "eventIds",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "_index",
         type: "uint256",
@@ -896,6 +915,25 @@ const _abi = [
         internalType: "uint256",
         name: "purchaseId",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_customer",
+        type: "address",
+      },
+    ],
+    name: "getPurchaseIdsByCustomer",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "purchaseIds",
+        type: "uint256[]",
       },
     ],
     stateMutability: "view",

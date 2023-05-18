@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-import '@rainbow-me/rainbowkit/styles.css';
+import "@rainbow-me/rainbowkit/styles.css";
 
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import {
   mainnet,
   polygon,
@@ -15,8 +15,10 @@ import {
   arbitrum,
   goerli,
   polygonMumbai,
-} from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
+} from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
+import { store } from "./store";
+import { Provider } from "react-redux";
 
 const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum, goerli, polygonMumbai],
@@ -24,8 +26,8 @@ const { chains, publicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'My RainbowKit App',
-  projectId: 'YOUR_PROJECT_ID',
+  appName: "NFINITY",
+  projectId: "YOUR_PROJECT_ID",
   chains,
 });
 
@@ -36,15 +38,17 @@ const wagmiConfig = createConfig({
 });
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <App />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <Provider store={store}>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <App />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </Provider>
   </React.StrictMode>
 );
 

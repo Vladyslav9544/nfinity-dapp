@@ -48,8 +48,10 @@ export interface NfinityInterface extends utils.Interface {
     "getCountOrganizers()": FunctionFragment;
     "getCustomerByIndex(uint256)": FunctionFragment;
     "getEventIdByIndex(address,uint256)": FunctionFragment;
+    "getEventIdsByOrgazer(address)": FunctionFragment;
     "getOrganizerByIndex(uint256)": FunctionFragment;
     "getPurchaseIdByIndex(address,uint256)": FunctionFragment;
+    "getPurchaseIdsByCustomer(address)": FunctionFragment;
     "openStore()": FunctionFragment;
     "owner()": FunctionFragment;
     "purchaseTickets(uint256,uint256,string,uint256,string)": FunctionFragment;
@@ -82,8 +84,10 @@ export interface NfinityInterface extends utils.Interface {
       | "getCountOrganizers"
       | "getCustomerByIndex"
       | "getEventIdByIndex"
+      | "getEventIdsByOrgazer"
       | "getOrganizerByIndex"
       | "getPurchaseIdByIndex"
+      | "getPurchaseIdsByCustomer"
       | "openStore"
       | "owner"
       | "purchaseTickets"
@@ -180,12 +184,20 @@ export interface NfinityInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getEventIdsByOrgazer",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getOrganizerByIndex",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getPurchaseIdByIndex",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPurchaseIdsByCustomer",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "openStore", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -295,11 +307,19 @@ export interface NfinityInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getEventIdsByOrgazer",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getOrganizerByIndex",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "getPurchaseIdByIndex",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getPurchaseIdsByCustomer",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "openStore", data: BytesLike): Result;
@@ -753,6 +773,11 @@ export interface Nfinity extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { eventId: BigNumber }>;
 
+    getEventIdsByOrgazer(
+      _organizer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]] & { eventIds: BigNumber[] }>;
+
     getOrganizerByIndex(
       _index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -763,6 +788,11 @@ export interface Nfinity extends BaseContract {
       _index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { purchaseId: BigNumber }>;
+
+    getPurchaseIdsByCustomer(
+      _customer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber[]] & { purchaseIds: BigNumber[] }>;
 
     openStore(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -980,6 +1010,11 @@ export interface Nfinity extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getEventIdsByOrgazer(
+    _organizer: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
+
   getOrganizerByIndex(
     _index: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -990,6 +1025,11 @@ export interface Nfinity extends BaseContract {
     _index: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  getPurchaseIdsByCustomer(
+    _customer: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber[]>;
 
   openStore(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1205,6 +1245,11 @@ export interface Nfinity extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getEventIdsByOrgazer(
+      _organizer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
+
     getOrganizerByIndex(
       _index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1215,6 +1260,11 @@ export interface Nfinity extends BaseContract {
       _index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getPurchaseIdsByCustomer(
+      _customer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
 
     openStore(overrides?: CallOverrides): Promise<void>;
 
@@ -1512,6 +1562,11 @@ export interface Nfinity extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getEventIdsByOrgazer(
+      _organizer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getOrganizerByIndex(
       _index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1520,6 +1575,11 @@ export interface Nfinity extends BaseContract {
     getPurchaseIdByIndex(
       _customer: PromiseOrValue<string>,
       _index: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPurchaseIdsByCustomer(
+      _customer: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1664,6 +1724,11 @@ export interface Nfinity extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getEventIdsByOrgazer(
+      _organizer: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getOrganizerByIndex(
       _index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1672,6 +1737,11 @@ export interface Nfinity extends BaseContract {
     getPurchaseIdByIndex(
       _customer: PromiseOrValue<string>,
       _index: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPurchaseIdsByCustomer(
+      _customer: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
