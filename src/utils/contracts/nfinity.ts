@@ -2,7 +2,8 @@ import { Signer, ethers, providers } from "ethers";
 import { Nfinity__factory } from "../../types/contracts";
 import { NfinityAddress } from "../../config/config";
 import { getReadonlyProvider } from "../ethers";
-import { parseEther } from "ethers/lib/utils.js";
+import { formatEther, parseEther } from "ethers/lib/utils.js";
+import { EventDetailInterface } from "../../types/types";
 
 export const getNfinityContract = (
   provider?: ethers.Signer | ethers.providers.Provider
@@ -116,4 +117,29 @@ export const createEvent = async (
     { from: fromAddress }
   );
   await tx.wait();
+};
+
+export const getEventDetailById = async (eventId: number) => {
+  const contract = getNfinityContract();
+  const eInfo = await contract.fetchEventInfo(eventId);
+  const eDetail = await contract.fetchEventSalesInfo(eventId);
+
+  const res: EventDetailInterface = {
+    status: eInfo.eventStatus.toNumber(),
+    externalId: eInfo.eventExternalId,
+    organizer: eInfo.eventOrganizer,
+    name: eInfo.eventName,
+    storeIncentive: eInfo.eventStoreIncentive.toNumber() / 100,
+    ticketPrice: eInfo.eventTicketPrice.toString(),
+    ticketsOnSale: eInfo.eventTicketsOnSale.toNumber(),
+    ticketsSold: eDetail.eventTicketsSold.toNumber(),
+    ticketsLeft: eDetail.eventTicketsLeft.toNumber(),
+    ticketsCancelled: eDetail.eventTicketsCancelled.toNumber(),
+    ticketsRefunded: eDetail.eventTicketsRefunded.toNumber(),
+    ticketsCheckedIn: eDetail.eventTicketsCheckedIn.toNumber(),
+    balance: parseFloat(formatEther(eDetail.eventBalance)),
+    refundableBalance: parseFloat(formatEther(eDetail.eventRefundableBalance)),
+  };
+
+  return res;
 };

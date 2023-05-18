@@ -1,10 +1,20 @@
-import { StoreStatus } from "../types/types";
+import { EventStatus, StoreStatus } from "../types/types";
 
-export const StoreStatusStrings = {
+export const StoreStatusLabels = {
   [StoreStatus.Closed]: "CLOSED",
   [StoreStatus.Created]: "CREATED",
   [StoreStatus.Open]: "OPEN",
   [StoreStatus.Suspended]: "SUSPENDED",
+};
+
+export const EventStatusLabels = {
+  [EventStatus.Cancelled]: "Canceled",
+  [EventStatus.Completed]: "Completed",
+  [EventStatus.Created]: "Created",
+  [EventStatus.SalesFinished]: "SsalesFinished",
+  [EventStatus.SalesStarted]: "SalesStarted",
+  [EventStatus.SalesSuspended]: "SalesSuspended",
+  [EventStatus.Settled]: "Settled",
 };
 
 export const NotifyMessages = {

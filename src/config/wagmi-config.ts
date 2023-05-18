@@ -5,6 +5,7 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { alchemyProvider } from "wagmi/providers/alchemy";
+import { getDefaultWallets } from "@rainbow-me/rainbowkit";
 
 export const chains = [mainnet, goerli];
 
@@ -13,21 +14,27 @@ const { provider, webSocketProvider } = configureChains(chains, [
   publicProvider(),
 ]);
 
+const { connectors } = getDefaultWallets({
+  appName: "My RainbowKit App",
+  chains,
+});
+
 export const client = createClient({
   autoConnect: true,
-  connectors: [
-    new MetaMaskConnector(),
-    new CoinbaseWalletConnector({
-      chains,
-      options: { appName: "NFINITY" },
-    }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        projectId: "5cee8bf693e91f608c0bb70b1af1bc5e",
-      },
-    }),
-  ],
+  connectors,
+  // connectors: [
+  //   new MetaMaskConnector(),
+  //   new CoinbaseWalletConnector({
+  //     chains,
+  //     options: { appName: "NFINITY" },
+  //   }),
+  //   new WalletConnectConnector({
+  //     chains,
+  //     options: {
+  //       projectId: "5cee8bf693e91f608c0bb70b1af1bc5e",
+  //     },
+  //   }),
+  // ],
   provider,
   webSocketProvider,
 });

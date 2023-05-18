@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../store";
-import { NotifyMessages, StoreStatusStrings } from "../config/constants";
+import { NotifyMessages, StoreStatusLabels } from "../config/constants";
 import { MainChain } from "../config/config";
 import { StoreStatus } from "../types/types";
 import Button from "@mui/material/Button";
@@ -82,7 +82,7 @@ const StoreInformation = (props: Props) => {
         </div>
         <div className="px-5 py-2">
           <span className="font-bold">Status: </span>
-          {StoreStatusStrings[storeInfo.status]}
+          {StoreStatusLabels[storeInfo.status]}
         </div>
         <div className="px-5 py-2">
           <span className="font-bold">Settled Balance: </span>

@@ -21,3 +21,20 @@ export enum PurchaseStatus {
   Refunded = 2, // 2
   CheckedIn = 3, // 3
 }
+
+export interface EventDetailInterface {
+  status: EventStatus;
+  externalId: string;
+  organizer: string;
+  name: string;
+  storeIncentive: number;
+  ticketPrice: string;
+  ticketsOnSale: number;
+  ticketsSold: number;
+  ticketsLeft: number;
+  ticketsCancelled: number;
+  ticketsRefunded: number;
+  ticketsCheckedIn: number;
+  balance: number;
+  refundableBalance: number;
+}
