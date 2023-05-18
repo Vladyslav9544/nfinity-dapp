@@ -48,7 +48,7 @@ export interface NfinityInterface extends utils.Interface {
     "getCountOrganizers()": FunctionFragment;
     "getCustomerByIndex(uint256)": FunctionFragment;
     "getEventIdByIndex(address,uint256)": FunctionFragment;
-    "getEventIdsByOrgazer(address)": FunctionFragment;
+    "getEventIdsByOrganizer(address)": FunctionFragment;
     "getOrganizerByIndex(uint256)": FunctionFragment;
     "getPurchaseIdByIndex(address,uint256)": FunctionFragment;
     "getPurchaseIdsByCustomer(address)": FunctionFragment;
@@ -84,7 +84,7 @@ export interface NfinityInterface extends utils.Interface {
       | "getCountOrganizers"
       | "getCustomerByIndex"
       | "getEventIdByIndex"
-      | "getEventIdsByOrgazer"
+      | "getEventIdsByOrganizer"
       | "getOrganizerByIndex"
       | "getPurchaseIdByIndex"
       | "getPurchaseIdsByCustomer"
@@ -184,7 +184,7 @@ export interface NfinityInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getEventIdsByOrgazer",
+    functionFragment: "getEventIdsByOrganizer",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -307,7 +307,7 @@ export interface NfinityInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getEventIdsByOrgazer",
+    functionFragment: "getEventIdsByOrganizer",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -773,7 +773,7 @@ export interface Nfinity extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { eventId: BigNumber }>;
 
-    getEventIdsByOrgazer(
+    getEventIdsByOrganizer(
       _organizer: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber[]] & { eventIds: BigNumber[] }>;
@@ -1010,7 +1010,7 @@ export interface Nfinity extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getEventIdsByOrgazer(
+  getEventIdsByOrganizer(
     _organizer: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber[]>;
@@ -1245,7 +1245,7 @@ export interface Nfinity extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getEventIdsByOrgazer(
+    getEventIdsByOrganizer(
       _organizer: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
@@ -1562,7 +1562,7 @@ export interface Nfinity extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getEventIdsByOrgazer(
+    getEventIdsByOrganizer(
       _organizer: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1724,7 +1724,7 @@ export interface Nfinity extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getEventIdsByOrgazer(
+    getEventIdsByOrganizer(
       _organizer: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

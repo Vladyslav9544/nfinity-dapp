@@ -10,4 +10,5 @@ export const StoreStatusStrings = {
 export const NotifyMessages = {
   DefaultError: "Something went wrong, please try again later.",
   DefaultSuccess: "Success!",
+  DefaultWrongInput: "Wrong Input.",
 };

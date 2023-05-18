@@ -2,6 +2,7 @@ import { Signer, ethers, providers } from "ethers";
 import { Nfinity__factory } from "../../types/contracts";
 import { NfinityAddress } from "../../config/config";
 import { getReadonlyProvider } from "../ethers";
+import { parseEther } from "ethers/lib/utils.js";
 
 export const getNfinityContract = (
   provider?: ethers.Signer | ethers.providers.Provider
@@ -44,6 +45,22 @@ export const getAccountRole = async (address: string) => {
   return res;
 };
 
+export const getAccountPurchaseIds = async (customer: string) => {
+  const contract = getNfinityContract();
+
+  const res = await contract.getPurchaseIdsByCustomer(customer);
+
+  return res.map((id) => id.toNumber());
+};
+
+export const getAccountEventIds = async (organizer: string) => {
+  const contract = getNfinityContract();
+
+  const res = await contract.getEventIdsByOrganizer(organizer);
+
+  return res.map((id) => id.toNumber());
+};
+
 //==============================================================================
 //----------------------------    Write Methods     ----------------------------
 //==============================================================================
@@ -75,5 +92,28 @@ export const suspendStore = async (
   const contract = getNfinityContract(signer);
 
   const tx = await contract.suspendStore({ from: fromAddress });
+  await tx.wait();
+};
+
+export const createEvent = async (
+  externalId: string,
+  organizer: string,
+  name: string,
+  price: string,
+  sale: number,
+  incentive: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.createEvent(
+    externalId,
+    organizer,
+    name,
+    incentive * 100,
+    parseEther(price),
+    sale,
+    { from: fromAddress }
+  );
   await tx.wait();
 };

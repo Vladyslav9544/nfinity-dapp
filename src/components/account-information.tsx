@@ -27,11 +27,23 @@ const AccountInformation = () => {
             MainChain.nativeCurrency.symbol
           }`}
         </div>
-        <div className="px-5 py-2">
+        <div className="px-5 py-2 flex items-center gap-2">
           <span className="font-bold">Role: </span>
-          {accountInfo.accountIsOwner && " OWNER"}
-          {accountInfo.accountIsOrganizer && " Organizer"}
-          {accountInfo.accountIsCustomer && " Customer"}
+          {accountInfo.accountIsOwner && (
+            <span className="bg-green-700 text-white font-bold rounded-md py-[2px] px-2">
+              OWNER
+            </span>
+          )}
+          {accountInfo.accountIsOrganizer && (
+            <span className="bg-blue-700 text-white font-bold rounded-md py-[2px] px-2">
+              Organizer({accountInfo.accountEventIds.length})
+            </span>
+          )}
+          {accountInfo.accountIsCustomer && (
+            <span className="bg-teal-700 text-white font-bold rounded-md py-[2px] px-2">
+              Customer({accountInfo.accountPurchaseIds.length})
+            </span>
+          )}
         </div>
       </div>
     </Paper>

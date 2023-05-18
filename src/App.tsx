@@ -6,8 +6,10 @@ import { useAccount } from "wagmi";
 import {
   loadAccountBalance,
   loadAccountInformation,
+  setAccountAddress,
   setAccountStateToInitial,
 } from "./store/reducers/accountSlice";
+import NfinityEventListener from "./controllers/nfinity-event-listener";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -15,10 +17,19 @@ function App() {
 
   useEffect(() => {
     dispatch(initializeStoreInformation());
+
+    const intervalId = setInterval(() => {
+      dispatch(initializeStoreInformation());
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   useEffect(() => {
     if (address) {
+      dispatch(setAccountAddress(address));
       dispatch(loadAccountInformation(address));
     } else {
       dispatch(setAccountStateToInitial());
@@ -38,6 +49,7 @@ function App() {
 
   return (
     <div className="App">
+      <NfinityEventListener />
       <MainLayout />
     </div>
   );

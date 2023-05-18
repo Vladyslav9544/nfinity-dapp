@@ -104,38 +104,49 @@ const StoreInformation = (props: Props) => {
           <span className="font-bold">Purchases completed so far: </span>
           {storeInfo.counterPurchases}
         </div>
-        {accountInfo.accountIsOwner && (
-          <div className="flex gap-3 px-5 py-4">
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleSuspendStore}
-            >
-              Suspend Store
-            </Button>
+        <div className="flex gap-3 px-5 py-4">
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={handleSuspendStore}
+            className="disabled:cursor-not-allowed"
+            disabled={
+              !accountInfo.accountIsOwner ||
+              storeInfo.status === StoreStatus.Suspended
+            }
+          >
+            Suspend Store
+          </Button>
 
-            {storeInfo.status !== StoreStatus.Closed && (
-              <Button
-                variant="outlined"
-                color="warning"
-                onClick={handleCloseStore}
-              >
-                Close Store
-              </Button>
-            )}
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleCloseStore}
+            className="disabled:cursor-not-allowed"
+            disabled={
+              !accountInfo.accountIsOwner ||
+              storeInfo.status === StoreStatus.Closed
+            }
+          >
+            Close Store
+          </Button>
 
-            {(storeInfo.status === StoreStatus.Created ||
-              storeInfo.status === StoreStatus.Suspended) && (
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleOpenStore}
-              >
-                Open Store
-              </Button>
-            )}
-          </div>
-        )}
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleOpenStore}
+            className="disabled:cursor-not-allowed"
+            disabled={
+              !accountInfo.accountIsOwner ||
+              !(
+                storeInfo.status === StoreStatus.Created ||
+                storeInfo.status === StoreStatus.Suspended
+              )
+            }
+          >
+            Open Store
+          </Button>
+        </div>
       </div>
     </Paper>
   );

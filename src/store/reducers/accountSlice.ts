@@ -1,25 +1,54 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { StoreStatus } from "../../types/types";
-import { getAccountRole, getStoreInfo } from "../../utils/contracts/nfinity";
+import {
+  getAccountEventIds,
+  getAccountPurchaseIds,
+  getAccountRole,
+} from "../../utils/contracts/nfinity";
 import { getReadonlyProvider } from "../../utils/ethers";
 import { formatEther } from "ethers/lib/utils.js";
+import { RootState } from "..";
+import { isSameAddress } from "../../utils/helpers";
 
 export interface AccountState {
   accountIsOwner: boolean;
   accountIsOrganizer: boolean;
   accountIsCustomer: boolean;
   balance: number;
+  address: string;
+  accountPurchaseIds: number[];
+  accountEventIds: number[];
   loading: boolean;
 }
 
 export const loadAccountInformation = createAsyncThunk(
   "account/loadAccountInformation",
-  async (address: string, { rejectWithValue, dispatch }) => {
+  async (address: string, { rejectWithValue, getState, dispatch }) => {
     try {
       dispatch(loadAccountBalance(address));
-      const roles = await getAccountRole(address);
-      return roles;
+
+      let roles = {
+        accountIsOwner: false,
+        accountIsOrganizer: false,
+        accountIsCustomer: false,
+      };
+      let accountPurchaseIds: number[] = [];
+      let accountEventIds: number[] = [];
+
+      try {
+        roles = await getAccountRole(address);
+        accountPurchaseIds = await getAccountPurchaseIds(address);
+        accountEventIds = await getAccountEventIds(address);
+      } catch (error) {
+        console.error(error);
+      }
+
+      const tAddress = (getState() as RootState).account.address;
+      if (!isSameAddress(tAddress, address)) {
+        return rejectWithValue("");
+      }
+
+      return { roles, accountPurchaseIds, accountEventIds, address };
     } catch (error) {
       return rejectWithValue("");
     }
@@ -45,6 +74,9 @@ const initialState: AccountState = {
   accountIsCustomer: false,
   balance: 0,
   loading: false,
+  address: "",
+  accountPurchaseIds: [],
+  accountEventIds: [],
 };
 
 export const accountSlice = createSlice({
@@ -56,7 +88,27 @@ export const accountSlice = createSlice({
       state.accountIsOrganizer = false;
       state.accountIsCustomer = false;
       state.balance = 0;
+      state.address = "";
+      state.accountEventIds = [];
+      state.accountPurchaseIds = [];
       state.loading = false;
+    },
+    addNewEvent: (
+      state,
+      action: PayloadAction<{ organizer: string; eventId: number }>
+    ) => {
+      const { organizer, eventId } = action.payload;
+      console.log(organizer, eventId);
+      if (
+        isSameAddress(organizer, state.address) &&
+        !state.accountEventIds.includes(eventId)
+      ) {
+        state.accountEventIds.push(eventId);
+        state.accountIsOrganizer = true;
+      }
+    },
+    setAccountAddress: (state, action: PayloadAction<string>) => {
+      state.address = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -67,9 +119,14 @@ export const accountSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(loadAccountInformation.fulfilled, (state, action) => {
-      state.accountIsCustomer = action.payload.accountIsCustomer;
-      state.accountIsOrganizer = action.payload.accountIsOrganizer;
-      state.accountIsOwner = action.payload.accountIsOwner;
+      state.accountIsCustomer = action.payload.roles.accountIsCustomer;
+      state.accountIsOrganizer = action.payload.roles.accountIsOrganizer;
+      state.accountIsOwner = action.payload.roles.accountIsOwner;
+
+      state.accountPurchaseIds = action.payload.accountPurchaseIds;
+      state.accountEventIds = action.payload.accountEventIds;
+
+      state.address = action.payload.address;
       state.loading = false;
     });
 
@@ -80,6 +137,7 @@ export const accountSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setAccountStateToInitial } = accountSlice.actions;
+export const { setAccountStateToInitial, setAccountAddress, addNewEvent } =
+  accountSlice.actions;
 
 export default accountSlice.reducer;

@@ -866,7 +866,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "getEventIdsByOrgazer",
+    name: "getEventIdsByOrganizer",
     outputs: [
       {
         internalType: "uint256[]",

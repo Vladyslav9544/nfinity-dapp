@@ -10,6 +10,7 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { chains, client } from "./config/wagmi-config";
+import { BrowserRouter } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,14 +21,16 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <WagmiConfig client={client}>
-        <RainbowKitProvider chains={chains}>
-          <App />
-          <ToastContainer />
-        </RainbowKitProvider>
-      </WagmiConfig>
-    </Provider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <WagmiConfig client={client}>
+          <RainbowKitProvider chains={chains}>
+            <App />
+            <ToastContainer />
+          </RainbowKitProvider>
+        </WagmiConfig>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

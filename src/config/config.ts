@@ -1,6 +1,6 @@
 import { goerli } from "wagmi/chains";
 
-export const NfinityAddress = "0x8b2D258D5129fa9f29E3C0a78830edF11555DF20";
+export const NfinityAddress = "0xaeDC57839351f2B0E697a9fbcc77EA5F2C839edE";
 
 export const MainChain = goerli;
 
