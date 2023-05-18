@@ -63,6 +63,8 @@ export const nfinitySlice = createSlice({
       state.refundableBalance = action.payload.refundableBalance;
       state.counterEvents = action.payload.counterEvents;
       state.counterPurchases = action.payload.counterPurchases;
+
+      state.loading = false;
     });
   },
 });

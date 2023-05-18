@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { Signer, ethers, providers } from "ethers";
 import { Nfinity__factory } from "../../types/contracts";
 import { NfinityAddress } from "../../config/config";
 import { getReadonlyProvider } from "../ethers";
@@ -36,6 +36,44 @@ export const getStoreInfo = async () => {
   };
 };
 
+export const getAccountRole = async (address: string) => {
+  const contract = getNfinityContract();
+
+  const res = await contract.getAccountRole(address);
+
+  return res;
+};
+
 //==============================================================================
 //----------------------------    Write Methods     ----------------------------
 //==============================================================================
+
+export const openStore = async (
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+
+  const tx = await contract.openStore({ from: fromAddress });
+  await tx.wait();
+};
+
+export const closeStore = async (
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+
+  const tx = await contract.closeStore({ from: fromAddress });
+  await tx.wait();
+};
+
+export const suspendStore = async (
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+
+  const tx = await contract.suspendStore({ from: fromAddress });
+  await tx.wait();
+};

@@ -1,10 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import nfinityReducer from "./reducers/nfinitySlice";
+import accountReducer from "./reducers/accountSlice";
+import appReducer from "./reducers/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
 export const store = configureStore({
-  reducer: { nfinity: nfinityReducer },
+  reducer: {
+    nfinity: nfinityReducer,
+    account: accountReducer,
+    app: appReducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -4,38 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import "@rainbow-me/rainbowkit/styles.css";
-
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  goerli,
-  polygonMumbai,
-} from "wagmi/chains";
-import { publicProvider } from "wagmi/providers/public";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { WagmiConfig } from "wagmi";
 import { store } from "./store";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import { chains, client } from "./config/wagmi-config";
 
-const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, goerli, polygonMumbai],
-  [publicProvider()]
-);
+import "react-toastify/dist/ReactToastify.css";
 
-const { connectors } = getDefaultWallets({
-  appName: "NFINITY",
-  projectId: "YOUR_PROJECT_ID",
-  chains,
-});
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-});
+import "@rainbow-me/rainbowkit/styles.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -43,9 +21,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <WagmiConfig config={wagmiConfig}>
+      <WagmiConfig client={client}>
         <RainbowKitProvider chains={chains}>
           <App />
+          <ToastContainer />
         </RainbowKitProvider>
       </WagmiConfig>
     </Provider>
