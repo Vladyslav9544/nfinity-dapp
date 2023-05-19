@@ -11,7 +11,7 @@ export const EventStatusLabels = {
   [EventStatus.Cancelled]: "Canceled",
   [EventStatus.Completed]: "Completed",
   [EventStatus.Created]: "Created",
-  [EventStatus.SalesFinished]: "SsalesFinished",
+  [EventStatus.SalesFinished]: "SalesFinished",
   [EventStatus.SalesStarted]: "SalesStarted",
   [EventStatus.SalesSuspended]: "SalesSuspended",
   [EventStatus.Settled]: "Settled",

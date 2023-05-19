@@ -1,4 +1,4 @@
-import { Signer, ethers, providers } from "ethers";
+import { BigNumber, Signer, ethers, providers } from "ethers";
 import { Nfinity__factory } from "../../types/contracts";
 import { NfinityAddress } from "../../config/config";
 import { getReadonlyProvider } from "../ethers";
@@ -62,6 +62,31 @@ export const getAccountEventIds = async (organizer: string) => {
   return res.map((id) => id.toNumber());
 };
 
+export const getEventDetailById = async (eventId: number) => {
+  const contract = getNfinityContract();
+  const eInfo = await contract.fetchEventInfo(eventId);
+  const eDetail = await contract.fetchEventSalesInfo(eventId);
+
+  const res: EventDetailInterface = {
+    status: eInfo.eventStatus.toNumber(),
+    externalId: eInfo.eventExternalId,
+    organizer: eInfo.eventOrganizer,
+    name: eInfo.eventName,
+    storeIncentive: eInfo.eventStoreIncentive.toNumber() / 100,
+    ticketPrice: eInfo.eventTicketPrice.toString(),
+    ticketsOnSale: eInfo.eventTicketsOnSale.toNumber(),
+    ticketsSold: eDetail.eventTicketsSold.toNumber(),
+    ticketsLeft: eDetail.eventTicketsLeft.toNumber(),
+    ticketsCancelled: eDetail.eventTicketsCancelled.toNumber(),
+    ticketsRefunded: eDetail.eventTicketsRefunded.toNumber(),
+    ticketsCheckedIn: eDetail.eventTicketsCheckedIn.toNumber(),
+    balance: parseFloat(formatEther(eDetail.eventBalance)),
+    refundableBalance: parseFloat(formatEther(eDetail.eventRefundableBalance)),
+  };
+
+  return res;
+};
+
 //==============================================================================
 //----------------------------    Write Methods     ----------------------------
 //==============================================================================
@@ -118,28 +143,83 @@ export const createEvent = async (
   );
   await tx.wait();
 };
+export const purhcaseTickets = async (
+  eventId: number,
+  quantity: number,
+  externalId: string,
+  customerId: string,
+  value: BigNumber,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.purchaseTickets(
+    eventId,
+    quantity,
+    externalId,
+    Date.now(),
+    customerId,
+    { from: fromAddress, value }
+  );
+  await tx.wait();
+};
 
-export const getEventDetailById = async (eventId: number) => {
-  const contract = getNfinityContract();
-  const eInfo = await contract.fetchEventInfo(eventId);
-  const eDetail = await contract.fetchEventSalesInfo(eventId);
+export const endTicketSale = async (
+  eventId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.endTicketSales(eventId, { from: fromAddress });
+  await tx.wait();
+};
 
-  const res: EventDetailInterface = {
-    status: eInfo.eventStatus.toNumber(),
-    externalId: eInfo.eventExternalId,
-    organizer: eInfo.eventOrganizer,
-    name: eInfo.eventName,
-    storeIncentive: eInfo.eventStoreIncentive.toNumber() / 100,
-    ticketPrice: eInfo.eventTicketPrice.toString(),
-    ticketsOnSale: eInfo.eventTicketsOnSale.toNumber(),
-    ticketsSold: eDetail.eventTicketsSold.toNumber(),
-    ticketsLeft: eDetail.eventTicketsLeft.toNumber(),
-    ticketsCancelled: eDetail.eventTicketsCancelled.toNumber(),
-    ticketsRefunded: eDetail.eventTicketsRefunded.toNumber(),
-    ticketsCheckedIn: eDetail.eventTicketsCheckedIn.toNumber(),
-    balance: parseFloat(formatEther(eDetail.eventBalance)),
-    refundableBalance: parseFloat(formatEther(eDetail.eventRefundableBalance)),
-  };
+export const suspendTicketSale = async (
+  eventId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.suspendTicketSales(eventId, { from: fromAddress });
+  await tx.wait();
+};
 
-  return res;
+export const startTicketSale = async (
+  eventId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.startTicketSales(eventId, { from: fromAddress });
+  await tx.wait();
+};
+
+export const cancelEvent = async (
+  eventId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.cancelEvent(eventId, { from: fromAddress });
+  await tx.wait();
+};
+
+export const settleEvent = async (
+  eventId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.settleEvent(eventId, { from: fromAddress });
+  await tx.wait();
+};
+
+export const completeEvent = async (
+  eventId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.completeEvent(eventId, { from: fromAddress });
+  await tx.wait();
 };

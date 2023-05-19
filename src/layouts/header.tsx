@@ -1,13 +1,17 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAccount } from "wagmi";
 
 const Header = () => {
   const { address } = useAccount();
+  const navigate = useNavigate();
   return (
     <header className="flex items-center py-3 px-6 bg-gray-800 shadow-xl">
-      <div className="flex items-center">
+      <div
+        className="flex items-center cursor-pointer"
+        onClick={() => navigate("/")}
+      >
         <img
           src="/images/logo.png"
           alt="logo"
