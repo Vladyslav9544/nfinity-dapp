@@ -1,6 +1,5 @@
 import { Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import EventDetail from "../components/event-detail";
 import { useAppSelector } from "../store";
 import PurchaseDetail from "../components/purchase-detail";
 
