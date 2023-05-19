@@ -14,12 +14,14 @@ const AllEvents = () => {
         <h1 className="text-2xl font-bold text-slate-800">
           Events ({eventCount})
         </h1>
-        <Pagination
-          count={eventCount}
-          color="primary"
-          page={eventId}
-          onChange={(_, p) => setEventId(p)}
-        />
+        {eventCount && (
+          <Pagination
+            count={eventCount}
+            color="primary"
+            page={eventId}
+            onChange={(_, p) => setEventId(p)}
+          />
+        )}
       </div>
 
       <div className="mt-10 flex justify-center">

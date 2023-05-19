@@ -385,9 +385,7 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_purchaseId", "type": "uint256" },
-      { "internalType": "string", "name": "_externalId", "type": "string" },
-      { "internalType": "string", "name": "_customerId", "type": "string" }
+      { "internalType": "uint256", "name": "_purchaseId", "type": "uint256" }
     ],
     "name": "cancelPurchase",
     "outputs": [],

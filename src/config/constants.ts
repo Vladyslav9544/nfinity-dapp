@@ -1,4 +1,4 @@
-import { EventStatus, StoreStatus } from "../types/types";
+import { EventStatus, PurchaseStatus, StoreStatus } from "../types/types";
 
 export const StoreStatusLabels = {
   [StoreStatus.Closed]: "CLOSED",
@@ -15,6 +15,13 @@ export const EventStatusLabels = {
   [EventStatus.SalesStarted]: "SalesStarted",
   [EventStatus.SalesSuspended]: "SalesSuspended",
   [EventStatus.Settled]: "Settled",
+};
+
+export const PurchaseStatusLabels = {
+  [PurchaseStatus.Cancelled]: "Cancelled",
+  [PurchaseStatus.CheckedIn]: "CheckedIn",
+  [PurchaseStatus.Completed]: "Completed",
+  [PurchaseStatus.Refunded]: "Refunded",
 };
 
 export const NotifyMessages = {

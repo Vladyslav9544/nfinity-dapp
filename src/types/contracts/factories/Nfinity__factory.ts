@@ -411,16 +411,6 @@ const _abi = [
         name: "_purchaseId",
         type: "uint256",
       },
-      {
-        internalType: "string",
-        name: "_externalId",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "_customerId",
-        type: "string",
-      },
     ],
     name: "cancelPurchase",
     outputs: [],

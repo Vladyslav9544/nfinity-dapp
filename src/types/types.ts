@@ -38,3 +38,14 @@ export interface EventDetailInterface {
   balance: number;
   refundableBalance: number;
 }
+
+export interface PurchaseDetailInterface {
+  status: PurchaseStatus;
+  externalId: string;
+  timestamp: number;
+  customer: string;
+  customerId: string;
+  quantity: number;
+  total: number;
+  eventId: number;
+}

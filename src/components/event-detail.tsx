@@ -108,7 +108,6 @@ const EventDetail = ({ eventId }: Props) => {
           await endTicketSale(eventId, address, signer);
           break;
         case EventStatus.SalesStarted:
-          console.log("start");
           await startTicketSale(eventId, address, signer);
           break;
         case EventStatus.SalesSuspended:
@@ -126,6 +125,8 @@ const EventDetail = ({ eventId }: Props) => {
         default:
           break;
       }
+      toast(NotifyMessages.DefaultSuccess, { type: "success" });
+      setEventDetail((prev) => (!prev ? undefined : { ...prev, status: st }));
     } catch (error) {
       console.error(`${EventStatusLabels[st]}: `, error);
       toast(NotifyMessages.DefaultError, { type: "error" });

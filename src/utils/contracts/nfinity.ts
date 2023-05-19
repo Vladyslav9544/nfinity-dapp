@@ -3,7 +3,10 @@ import { Nfinity__factory } from "../../types/contracts";
 import { NfinityAddress } from "../../config/config";
 import { getReadonlyProvider } from "../ethers";
 import { formatEther, parseEther } from "ethers/lib/utils.js";
-import { EventDetailInterface } from "../../types/types";
+import {
+  EventDetailInterface,
+  PurchaseDetailInterface,
+} from "../../types/types";
 
 export const getNfinityContract = (
   provider?: ethers.Signer | ethers.providers.Provider
@@ -82,6 +85,24 @@ export const getEventDetailById = async (eventId: number) => {
     ticketsCheckedIn: eDetail.eventTicketsCheckedIn.toNumber(),
     balance: parseFloat(formatEther(eDetail.eventBalance)),
     refundableBalance: parseFloat(formatEther(eDetail.eventRefundableBalance)),
+  };
+
+  return res;
+};
+
+export const getPurchaseDetailById = async (purchaseId: number) => {
+  const contract = getNfinityContract();
+  const detail = await contract.fetchPurchaseInfo(purchaseId);
+
+  const res: PurchaseDetailInterface = {
+    status: detail.purchaseStatus.toNumber(),
+    externalId: detail.purchaseExternalId,
+    timestamp: detail.purchaseTimestamp.toNumber(),
+    customer: detail.purchaseCustomer,
+    customerId: detail.purchaseCustomerId,
+    quantity: detail.purchaseQuantity.toNumber(),
+    total: parseFloat(formatEther(detail.purchaseTotal)),
+    eventId: detail.purchaseEventId.toNumber(),
   };
 
   return res;
@@ -221,5 +242,40 @@ export const completeEvent = async (
 ) => {
   const contract = getNfinityContract(signer);
   const tx = await contract.completeEvent(eventId, { from: fromAddress });
+  await tx.wait();
+};
+
+export const cancelPurchase = async (
+  purchaseId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.cancelPurchase(purchaseId, { from: fromAddress });
+  await tx.wait();
+};
+
+export const refundPurchase = async (
+  eventId: number,
+  purchaseId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.refundPurchase(eventId, purchaseId, {
+    from: fromAddress,
+  });
+  await tx.wait();
+};
+
+export const checkInPurchase = async (
+  purchaseId: number,
+  fromAddress: string,
+  signer: Signer | providers.Provider
+) => {
+  const contract = getNfinityContract(signer);
+  const tx = await contract.checkIn(purchaseId, {
+    from: fromAddress,
+  });
   await tx.wait();
 };

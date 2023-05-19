@@ -19,7 +19,7 @@ const AccountEvents = () => {
   return (
     <>
       {accountEvents.length === 0 ? (
-        <div>You have no events</div>
+        <div></div>
       ) : (
         <div>
           <div className="flex items-center justify-between">

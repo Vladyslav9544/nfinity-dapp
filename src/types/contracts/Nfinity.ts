@@ -31,7 +31,7 @@ import type {
 export interface NfinityInterface extends utils.Interface {
   functions: {
     "cancelEvent(uint256)": FunctionFragment;
-    "cancelPurchase(uint256,string,string)": FunctionFragment;
+    "cancelPurchase(uint256)": FunctionFragment;
     "checkIn(uint256)": FunctionFragment;
     "closeStore()": FunctionFragment;
     "completeEvent(uint256)": FunctionFragment;
@@ -106,11 +106,7 @@ export interface NfinityInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "cancelPurchase",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
-    ]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "checkIn",
@@ -610,8 +606,6 @@ export interface Nfinity extends BaseContract {
 
     cancelPurchase(
       _purchaseId: PromiseOrValue<BigNumberish>,
-      _externalId: PromiseOrValue<string>,
-      _customerId: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -851,8 +845,6 @@ export interface Nfinity extends BaseContract {
 
   cancelPurchase(
     _purchaseId: PromiseOrValue<BigNumberish>,
-    _externalId: PromiseOrValue<string>,
-    _customerId: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1088,8 +1080,6 @@ export interface Nfinity extends BaseContract {
 
     cancelPurchase(
       _purchaseId: PromiseOrValue<BigNumberish>,
-      _externalId: PromiseOrValue<string>,
-      _customerId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1481,8 +1471,6 @@ export interface Nfinity extends BaseContract {
 
     cancelPurchase(
       _purchaseId: PromiseOrValue<BigNumberish>,
-      _externalId: PromiseOrValue<string>,
-      _customerId: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1641,8 +1629,6 @@ export interface Nfinity extends BaseContract {
 
     cancelPurchase(
       _purchaseId: PromiseOrValue<BigNumberish>,
-      _externalId: PromiseOrValue<string>,
-      _customerId: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
